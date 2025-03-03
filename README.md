@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Learning Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .exercise {
+            margin-bottom: 30px;
+        }
+        .exercise button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .exercise button:hover {
+            background-color: #45a049;
+        }
+        .exercise input {
+            padding: 10px;
+            width: 200px;
+            margin-top: 10px;
+        }
+        .message {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .result {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Vocabulary Learning Tool</h1>
+
+    <div class="exercise" id="matchingExercise">
+        <h2>Matching Exercise</h2>
+        <p>Match the English word to the correct Korean translation:</p>
+        <ul>
+            <li>1. <span id="word1"></span>: <input type="text" id="answer1"></li>
+            <li>2. <span id="word2"></span>: <input type="text" id="answer2"></li>
+            <li>3. <span id="word3"></span>: <input type="text" id="answer3"></li>
+            <li>4. <span id="word4"></span>: <input type="text" id="answer4"></li>
+            <li>5. <span id="word5"></span>: <input type="text" id="answer5"></li>
+        </ul>
+        <button onclick="checkMatchingAnswers()">Check Answers</button>
+        <p class="message" id="matchingMessage"></p>
+    </div>
+
+    <div class="exercise" id="fillExercise">
+        <h2>Fill-in-the-Blank Exercise</h2>
+        <p>Fill in the blank with the correct word:</p>
+        <p>After much persuasion, my mother finally __________ and agreed to sign the papers.</p>
+        <input type="text" id="fillAnswer">
+        <button onclick="checkFillAnswer()">Check Answer</button>
+        <p class="message" id="fillMessage"></p>
+    </div>
+
+    <div class="exercise" id="multipleChoiceExercise">
+        <h2>Multiple Choice Exercise</h2>
+        <p>What does "Serif" refer to?</p>
+        <ul>
+            <li><input type="radio" id="optionA" name="serif" value="a"> a) A type of food</li>
+            <li><input type="radio" id="optionB" name="serif" value="b"> b) A style of font</li>
+            <li><input type="radio" id="optionC" name="serif" value="c"> c) A place of study</li>
+            <li><input type="radio" id="optionD" name="serif" value="d"> d) A philosophical concept</li>
+        </ul>
+        <button onclick="checkMultipleChoice()">Check Answer</button>
+        <p class="message" id="multipleChoiceMessage"></p>
+    </div>
+
+    <script>
+        // Vocabulary list
+        const vocabulary = {
+            'Honored': '영광인',
+            'Commencement': '졸업식',
+            'Drop out': '중퇴하다',
+            'Adopted': '입양된',
+            'Relented': '양보하다',
+            'Stumbled into': '우연히 만나다',
+            'Curiosity': '호기심',
+            'Subtle': '미묘한',
+            'Serif': '세리프 (서체)',
+            'Trust': '신뢰하다'
+        };
+
+        // Randomly display words for matching exercise
+        function loadMatchingExercise() {
+            const words = Object.keys(vocabulary);
+            const shuffledWords = words.sort(() => Math.random() - 0.5);
+            document.getElementById('word1').textContent = shuffledWords[0];
+            document.getElementById('word2').textContent = shuffledWords[1];
+            document.getElementById('word3').textContent = shuffledWords[2];
+            document.getElementById('word4').textContent = shuffledWords[3];
+            document.getElementById('word5').textContent = shuffledWords[4];
+        }
+
+        function checkMatchingAnswers() {
+            const correctAnswers = Object.values(vocabulary);
+            let score = 0;
+            for (let i = 1; i <= 5; i++) {
+                const answer = document.getElementById('answer' + i).value.trim();
+                if (answer === correctAnswers[i - 1]) {
+                    score++;
+                }
+            }
+            const message = score === 5 ? 'All answers are correct!' : 'Some answers are incorrect. Please try again.';
+            document.getElementById('matchingMessage').textContent = message;
+            document.getElementById('matchingMessage').className = score === 5 ? 'result' : 'incorrect';
+        }
+
+        // Fill-in-the-blank exercise
+        function checkFillAnswer() {
+            const answer = document.getElementById('fillAnswer').value.trim().toLowerCase();
+            const correctAnswer = 'Relented';
+            const message = answer === correctAnswer.toLowerCase() ? 'Correct!' : 'Incorrect! The correct answer is: ' + correctAnswer;
+            document.getElementById('fillMessage').textContent = message;
+            document.getElementById('fillMessage').className = answer === correctAnswer.toLowerCase() ? 'result' : 'incorrect';
+        }
+
+        // Multiple Choice exercise
+        function checkMultipleChoice() {
+            const options = document.getElementsByName('serif');
+           
